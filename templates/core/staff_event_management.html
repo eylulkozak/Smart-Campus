@@ -1,0 +1,133 @@
+{% extends 'core/staff_base.html' %}
+
+{% block title %}Event Management{% endblock %}
+{% block page_title %}Event Management{% endblock %}
+
+{% block content %}
+
+<div class="panel-card">
+
+    <div class="panel-header">
+        <div>
+            <h3>All Events</h3>
+            <p>Manage and review campus events.</p>
+        </div>
+
+        <a href="{% url 'create_event' %}" class="create-btn">
+            <i class="fas fa-plus-circle"></i>
+            Create New Event
+        </a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Event Title</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Participants</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.title }}</td>
+                <td>{{ event.date|date:"d M Y" }}</td>
+                <td>
+                    <span class="status-badge">{{ event.status }}</span>
+                </td>
+                <td>
+                    <a href="{% url 'event_participants' event.id %}" class="small-btn">
+                        View Participants
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No events found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<style>
+    .panel-card {
+        background: white;
+        padding: 28px;
+        border-radius: 22px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    }
+
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .panel-header h3 {
+        margin: 0;
+        color: #111827;
+        font-size: 24px;
+    }
+
+    .panel-header p {
+        margin: 6px 0 0;
+        color: #6b7280;
+    }
+
+    .create-btn {
+        text-decoration: none;
+        background: #7c3aed;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        color: #6b7280;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    td {
+        padding: 16px 0;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .status-badge {
+        background: #ede9fe;
+        color: #6d28d9;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: bold;
+        text-transform: capitalize;
+        font-size: 13px;
+    }
+
+    .small-btn {
+        text-decoration: none;
+        background: #f4f6fb;
+        color: #111827;
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .small-btn:hover {
+        background: #7c3aed;
+        color: white;
+    }
+</style>
+
+{% endblock %}

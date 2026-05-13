@@ -1,0 +1,250 @@
+{% extends 'core/admin_base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_title %}Admin Control Center{% endblock %}
+
+{% block content %}
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:24px; margin-bottom:30px;">
+
+    <div class="admin-card red">
+        <div>
+            <p>Total Users</p>
+            <h2>{{ total_users }}</h2>
+        </div>
+        <i class="fas fa-users"></i>
+    </div>
+
+    <div class="admin-card blue">
+        <div>
+            <p>Total Events</p>
+            <h2>{{ total_events }}</h2>
+        </div>
+        <i class="fas fa-calendar-alt"></i>
+    </div>
+
+    <div class="admin-card green">
+        <div>
+            <p>Pending Events</p>
+            <h2>{{ pending_events }}</h2>
+        </div>
+        <i class="fas fa-clock"></i>
+    </div>
+
+    <div class="admin-card orange">
+        <div>
+            <p>Staff Applications</p>
+            <h2>{{ staff_requests }}</h2>
+        </div>
+        <i class="fas fa-user-check"></i>
+    </div>
+
+</div>
+
+<div style="display:grid; grid-template-columns:2fr 1fr; gap:25px;">
+
+    <div class="panel-card">
+
+        <div class="panel-header">
+            <h3>Recent Events</h3>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for event in recent_events %}
+                <tr>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.date|date:"d M Y" }}</td>
+
+                    <td>
+                        {% if event.status == 'approved' %}
+                            <span class="badge green-badge">Approved</span>
+                        {% elif event.status == 'pending' %}
+                            <span class="badge yellow-badge">Pending</span>
+                        {% else %}
+                            <span class="badge red-badge">Rejected</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="panel-card">
+
+        <div class="panel-header">
+            <h3>Quick Actions</h3>
+        </div>
+
+        <a href="{% url 'admin_user_management' %}" class="quick-btn">
+            <i class="fas fa-users-cog"></i>
+            Manage Users
+        </a>
+
+        <a href="{% url 'admin_event_approval' %}" class="quick-btn">
+            <i class="fas fa-calendar-check"></i>
+            Review Events
+        </a>
+
+        <a href="{% url 'manage_staff_applications' %}" class="quick-btn">
+            <i class="fas fa-user-check"></i>
+            Staff Requests
+        </a>
+
+    </div>
+
+</div>
+
+<style>
+
+.admin-card{
+    background:white;
+    border-radius:20px;
+    padding:24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 5px 18px rgba(0,0,0,0.06);
+}
+
+.admin-card p{
+    margin:0;
+    color:#6b7280;
+    font-weight:600;
+}
+
+.admin-card h2{
+    margin-top:10px;
+    font-size:38px;
+}
+
+.admin-card i{
+    font-size:34px;
+    padding:18px;
+    border-radius:18px;
+}
+
+.red{
+    border-left:6px solid #dc2626;
+}
+
+.red i{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.blue{
+    border-left:6px solid #2563eb;
+}
+
+.blue i{
+    background:#dbeafe;
+    color:#2563eb;
+}
+
+.green{
+    border-left:6px solid #059669;
+}
+
+.green i{
+    background:#d1fae5;
+    color:#059669;
+}
+
+.orange{
+    border-left:6px solid #ea580c;
+}
+
+.orange i{
+    background:#ffedd5;
+    color:#ea580c;
+}
+
+.panel-card{
+    background:white;
+    border-radius:20px;
+    padding:24px;
+    box-shadow:0 5px 18px rgba(0,0,0,0.06);
+}
+
+.panel-header{
+    margin-bottom:20px;
+}
+
+.panel-header h3{
+    margin:0;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    padding-bottom:12px;
+    border-bottom:1px solid #e5e7eb;
+    color:#6b7280;
+}
+
+td{
+    padding:16px 0;
+    border-bottom:1px solid #f3f4f6;
+}
+
+.badge{
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.green-badge{
+    background:#d1fae5;
+    color:#059669;
+}
+
+.yellow-badge{
+    background:#fef3c7;
+    color:#d97706;
+}
+
+.red-badge{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.quick-btn{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    padding:15px;
+    background:#f9fafb;
+    color:#111827;
+    border-radius:14px;
+    margin-bottom:14px;
+    transition:0.3s;
+    font-weight:600;
+}
+
+.quick-btn:hover{
+    background:#dc2626;
+    color:white;
+}
+
+</style>
+
+{% endblock %}

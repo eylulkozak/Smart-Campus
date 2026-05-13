@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 fw-bold text-dark">
+        <i class="fas fa-users text-primary me-2"></i>Campus Clubs
+    </h2>
+    
+    <div class="row">
+        {% for club in clubs %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    {% if club.logo_url %}
+                        <img src="{{ club.logo_url }}" alt="{{ club.name }}" class="mb-3" style="height: 60px;">
+                    {% else %}
+                        <div class="mb-3"><i class="fas fa-university fa-3x text-light-emphasis"></i></div>
+                    {% endif %}
+                    
+                    <h5 class="card-title fw-bold text-primary">{{ club.name }}</h5>
+                    <p class="card-text text-secondary small">{{ club.description|truncatewords:20 }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0 pb-3 text-center">
+                    {% if club.id in user_memberships %}
+                        <button class="btn btn-secondary w-100 disabled">Already Applied</button>
+                    {% else %}
+                        <a href="{% url 'join_club' club.id %}" class="btn btn-outline-primary w-100">Join Club</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No clubs found in the system yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

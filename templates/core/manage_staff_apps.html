@@ -1,0 +1,129 @@
+{% extends 'core/admin_base.html' %}
+
+{% block title %}Staff Applications{% endblock %}
+{% block page_title %}Staff Application Requests{% endblock %}
+
+{% block content %}
+
+<div class="panel-card">
+
+    <div class="panel-header">
+        <div>
+            <h3>Pending Staff Applications</h3>
+            <p>Review students who applied to become staff.</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Applicant</th>
+                <th>Email</th>
+                <th class="action-col">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for app in apps %}
+            <tr>
+                <td><strong>{{ app.student.username }}</strong></td>
+                <td>{{ app.student.email|default:"-" }}</td>
+                <td class="action-col">
+                    <a href="{% url 'evaluate_staff_application' app.id 'approve' %}" class="approve-btn">Approve</a>
+                    <a href="{% url 'evaluate_staff_application' app.id 'reject' %}" class="reject-btn">Reject</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="empty">No staff applications found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<style>
+    .panel-card {
+        background: white;
+        border-radius: 20px;
+        padding: 26px;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+    }
+
+    .panel-header {
+        margin-bottom: 24px;
+    }
+
+    .panel-header h3 {
+        margin: 0;
+        color: #111827;
+        font-size: 24px;
+    }
+
+    .panel-header p {
+        margin: 6px 0 0;
+        color: #6b7280;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #e5e7eb;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    td {
+        padding: 16px 0;
+        border-bottom: 1px solid #f3f4f6;
+        color: #374151;
+    }
+
+    .action-col {
+        text-align: right;
+    }
+
+    .approve-btn,
+    .reject-btn {
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 13px;
+        margin-left: 6px;
+    }
+
+    .approve-btn {
+        background: #d1fae5;
+        color: #047857;
+    }
+
+    .reject-btn {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .approve-btn:hover {
+        background: #059669;
+        color: white;
+    }
+
+    .reject-btn:hover {
+        background: #dc2626;
+        color: white;
+    }
+
+    .empty {
+        text-align: center;
+        color: #6b7280;
+        padding: 30px 0;
+    }
+</style>
+
+{% endblock %}

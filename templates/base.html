@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body { overflow-x: hidden; }
+
+        #sidebar-wrapper {
+            min-height: 100vh;
+            width: 250px;
+            margin-left: -250px;
+            transition: margin .25s ease-out;
+            background: #212529;
+        }
+
+        #sidebar-wrapper .sidebar-heading {
+            padding: 0.875rem 1.25rem;
+            font-size: 1.2rem;
+            color: white;
+            border-bottom: 1px solid #343a40;
+        }
+
+        #sidebar-wrapper .list-group { width: 250px; }
+        #page-content-wrapper { min-width: 100vw; }
+
+        body.sb-sidenav-toggled #sidebar-wrapper { margin-left: 0; }
+
+        @media (min-width: 768px) {
+            #sidebar-wrapper { margin-left: 0; }
+            #page-content-wrapper { min-width: 0; width: 100%; }
+        }
+
+        .nav-link-custom {
+            color: #adb5bd;
+            transition: 0.3s;
+            padding: 15px 20px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .nav-link-custom:hover {
+            background: #343a40;
+            color: #fff;
+        }
+
+        .nav-link-custom.active {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid #495057;
+            margin: 10px 20px;
+        }
+
+        .admin-section-header {
+            padding: 10px 20px;
+            font-size: 0.75rem;
+            color: #ffc107;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<div class="d-flex" id="wrapper">
+
+    <div class="border-end" id="sidebar-wrapper">
+        <div class="sidebar-heading fw-bold text-center py-4 text-primary">
+            <i class="fas fa-university me-2"></i>Smart Campus
+        </div>
+
+        <div class="list-group list-group-flush">
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'student_dashboard' %}active{% endif %}" href="{% url 'student_dashboard' %}">
+                <i class="fas fa-home me-2"></i> Dashboard
+            </a>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'event_list' %}active{% endif %}" href="{% url 'event_list' %}">
+                <i class="fas fa-calendar-alt me-2"></i> Events
+            </a>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'club_list' %}active{% endif %}" href="{% url 'club_list' %}">
+                <i class="fas fa-users me-2"></i> Clubs
+            </a>
+
+            <div class="sidebar-divider"></div>
+            <div class="px-4 py-2 small text-muted text-uppercase">My Records</div>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'my_applications' %}active{% endif %}" href="{% url 'my_applications' %}">
+                <i class="fas fa-check-circle me-2"></i> My Applications
+            </a>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'apply_for_staff' %}active{% endif %}" href="{% url 'apply_for_staff' %}">
+                <i class="fas fa-user-tie me-2"></i> Apply for Staff
+            </a>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'my_reservations' %}active{% endif %}" href="{% url 'my_reservations' %}">
+                <i class="fas fa-bookmark me-2"></i> My Reservations
+            </a>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'announcements_list' %}active{% endif %}" href="{% url 'announcements_list' %}">
+                <i class="fas fa-bullhorn me-2"></i> Announcements
+            </a>
+
+            {% if user.role == 'admin' %}
+                <div class="sidebar-divider"></div>
+                <div class="admin-section-header text-uppercase">Admin Panel</div>
+
+                <a class="nav-link-custom {% if request.resolver_match.url_name == 'admin_user_management' %}active{% endif %}" href="{% url 'admin_user_management' %}">
+                    <i class="fas fa-users-cog me-2"></i> User Roles
+                </a>
+
+                <a class="nav-link-custom {% if request.resolver_match.url_name == 'admin_event_approval' %}active{% endif %}" href="{% url 'admin_event_approval' %}">
+                    <i class="fas fa-tasks me-2"></i> Event Approvals
+                </a>
+            {% endif %}
+
+            <div class="sidebar-divider"></div>
+            <div class="px-4 py-2 small text-muted text-uppercase">Account</div>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'send_feedback' %}active{% endif %}" href="{% url 'send_feedback' %}">
+                <i class="fas fa-comment-dots me-2"></i> Feedback
+            </a>
+
+            <a class="nav-link-custom {% if request.resolver_match.url_name == 'my_profile' %}active{% endif %}" href="{% url 'my_profile' %}">
+                <i class="fas fa-user-circle me-2"></i> My Profile
+            </a>
+
+            <form action="{% url 'logout' %}" method="post" class="px-3 mt-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <div id="page-content-wrapper">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-primary btn-sm d-md-none" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="ms-auto d-flex align-items-center">
+                    {% if user.role == 'admin' %}
+                        <span class="badge bg-danger me-3">ADMIN</span>
+                    {% endif %}
+
+                    <span class="navbar-text">
+                        Welcome, <strong>{{ user.username }}</strong>
+                    </span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+        const sidebarToggle = document.body.querySelector('#sidebarToggle');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', event => {
+                event.preventDefault();
+                document.body.classList.toggle('sb-sidenav-toggled');
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

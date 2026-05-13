@@ -1,0 +1,129 @@
+{% extends 'core/staff_base.html' %}
+
+{% block title %}Announcements{% endblock %}
+{% block page_title %}Announcement Management{% endblock %}
+
+{% block content %}
+
+<div class="panel-card">
+
+    <div class="panel-header">
+        <div>
+            <h3>Announcements</h3>
+            <p>View and manage campus announcements.</p>
+        </div>
+    </div>
+
+    <div class="announcement-list">
+        {% for announcement in announcements %}
+            <div class="announcement-card">
+                <div class="announcement-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+
+                <div class="announcement-content">
+                    <h4>{{ announcement.title }}</h4>
+                    <p>{{ announcement.content }}</p>
+
+                    <small>
+                        Created at:
+                        {% if announcement.created_at %}
+                            {{ announcement.created_at|date:"d M Y H:i" }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty">
+                <i class="fas fa-bullhorn"></i>
+                <p>No announcements found.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<style>
+    .panel-card {
+        background: white;
+        padding: 28px;
+        border-radius: 22px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    }
+
+    .panel-header {
+        margin-bottom: 25px;
+    }
+
+    .panel-header h3 {
+        margin: 0;
+        color: #111827;
+        font-size: 24px;
+    }
+
+    .panel-header p {
+        margin: 6px 0 0;
+        color: #6b7280;
+    }
+
+    .announcement-card {
+        display: flex;
+        gap: 18px;
+        padding: 20px;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        margin-bottom: 15px;
+        background: #fafafa;
+        transition: 0.3s;
+    }
+
+    .announcement-card:hover {
+        background: #f4f6fb;
+        transform: translateY(-3px);
+    }
+
+    .announcement-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+        background: #ede9fe;
+        color: #7c3aed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+        flex-shrink: 0;
+    }
+
+    .announcement-content h4 {
+        margin: 0 0 8px;
+        color: #111827;
+    }
+
+    .announcement-content p {
+        margin: 0 0 10px;
+        color: #4b5563;
+        line-height: 1.5;
+    }
+
+    .announcement-content small {
+        color: #6b7280;
+        font-weight: 600;
+    }
+
+    .empty {
+        text-align: center;
+        color: #6b7280;
+        padding: 40px;
+    }
+
+    .empty i {
+        font-size: 40px;
+        color: #7c3aed;
+        margin-bottom: 12px;
+    }
+</style>
+
+{% endblock %}
